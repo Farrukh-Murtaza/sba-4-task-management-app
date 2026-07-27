@@ -31,6 +31,18 @@
     const closeButton = document.getElementById("closeBtn");
     const taskForm = document.getElementById("taskForm");
 
+
+    const columnMap = {
+        "to-do": document.getElementById("todoList"),
+        "in-progress": document.getElementById("inProgressList"),
+        "completed": document.getElementById("completedList")
+    };
+
+        // check if allTask exist in localStorage
+    // if its null create a key allTask with and empty array 
+    let allTasks = JSON.parse(localStorage.getItem("allTasks")) || [];
+
+
     function toggleModal (e){
         if( modal.classList.contains("hidden")){
             modal.classList.remove("hidden");
@@ -39,21 +51,120 @@
         }  
     }
 
-    addButton.addEventListener("click" , toggleModal);
-    closeButton.addEventListener("click" , toggleModal);
-    backdrop.addEventListener("click" , toggleModal);
 
-    let allTasks = [];
+    function saveTasks() {
+        localStorage.setItem("allTasks", JSON.stringify(allTasks));
+    }
+
+
+      function renderTasks() {
+       
+        Object.values(columnMap).forEach(list => list.innerHTML = "");
+        allTasks.forEach(task => {
+            const column = columnMap[task.status];
+            if (column) {
+                return column.appendChild(createTaskCard(task));
+            }
+        });
+    }
+
+
+    // handle the status change
+    function handleStatusChange(e) {
+        const id = Number(e.target.dataset.id);
+        const task = allTasks.find(t => t.id === id);
+        if (task) {
+            task.status = e.target.value;
+            saveTasks();
+            renderTasks();
+        }
+    }
+
+
+    // handle overdue tasks
+    function isOverdue(task) {
+        if (task.status === "completed") return false;
+        if (!task.deadline) return false;
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // strip time so it's a pure date comparison
+
+        const deadlineDate = new Date(task.deadline);
+        deadlineDate.setHours(0, 0, 0, 0);
+
+        return deadlineDate < today;
+    }
+
+
+    function createTaskCard(task) {
+        const li = document.createElement("li");
+        li.className = "bg-white rounded-lg p-3 shadow-sm";
+
+         const overdue = isOverdue(task);
+
+        // red left border as a visual cue when overdue
+        if (overdue) {
+            li.classList.add("border-l-4", "border-red-500");
+        }
+
+        const name = document.createElement("p");
+        name.className = "font-medium text-gray-800 text-sm";
+        name.textContent = task.taskName;
+
+        const category = document.createElement("p");
+        category.className = "text-xs text-gray-500 mt-1";
+        category.textContent = task.category;
+
+        const deadlineRow = document.createElement("div");
+        deadlineRow.className = "flex items-center gap-2";
+
+        const deadline = document.createElement("p");
+        deadline.className = "text-xs text-gray-500";
+        deadline.textContent = `Due: ${task.deadline}`;
+        deadlineRow.appendChild(deadline);
+
+        // "Overdue" badge, shown automatically based on today's date
+        if (overdue) {
+            const badge = document.createElement("span");
+            badge.className = "text-[10px] font-semibold text-red-600 bg-red-50 px-1.5 py-0.5 rounded";
+            badge.textContent = "Overdue";
+            deadlineRow.appendChild(badge);
+        }
+
+        const statusSelect = document.createElement("select");
+        statusSelect.className = "mt-2 text-xs border border-gray-200 rounded p-1";
+        statusSelect.dataset.id = task.id;
+        statusSelect.innerHTML = `
+            <option value="to-do">To do</option>
+            <option value="in-progress">In progress</option>
+            <option value="completed">Completed</option>
+        `;
+        statusSelect.value = task.status;
+        statusSelect.addEventListener("change", handleStatusChange);
+
+        li.append(name, category, deadline, statusSelect);
+        return li;
+    }
+
 
     function handleSubmit (e) {
         e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
 
-    allTasks.push(data);
-    
-        
-    console.log(allTasks)
+        data.id = Date.now(); // giving id generated from data
+        allTasks.push(data);
+        saveTasks();
+
+        e.target.reset();
+         renderTasks();
+         toggleModal();
     }
 
+
+    addButton.addEventListener("click" , toggleModal);
+    closeButton.addEventListener("click" , toggleModal);
+    backdrop.addEventListener("click" , toggleModal);
     taskForm.addEventListener("submit", handleSubmit)
+
+    renderTasks();

@@ -128,8 +128,8 @@
 
                 <h1 class="text-2xl font-bold text-gray-900 mb-3">Tasks</h1>
                 <div class="flex flex-row gap-10 ">
-                    <div class="basis-1/3 bg-[#ecf4fd] min-h-screen rounded rounded-2xl p-4">
-                        <div class="flex justify-between items-center px-2">
+                    <div id="todoColumn" class="basis-1/3 bg-[#ecf4fd] min-h-screen rounded rounded-2xl p-4">
+                        <div class="flex justify-between items-center px-2 mb-3">
                             <h2 class="">Todo Tasks</h2>
                             <button
                                 class="cursor-pointer rounded rounded-full hover:bg-[#c6defa] hover:text-[#1A87D7] p-2"
@@ -142,12 +142,17 @@
                                 </svg>
                             </button>
                         </div>
+
+                        <ul id="todoList" class="mt-4 space-y-3 px-2"></ul>
+
                     </div>
                     <div class="basis-1/3 bg-[#ecf4fd] min-h-screen rounded rounded-2xl p-4">
                         <h2 class="">In Progress</h2>
+                        <ul id="inProgressList" class="mt-4 space-y-3 px-2"></ul>
                     </div>
                     <div class="basis-1/3 bg-[#ecf4fd] min-h-screen rounded rounded-2xl p-4">
                         <h2 class="">Completed </h2>
+                        <ul id="completedList" class="mt-4 space-y-3 px-2"></ul>
                     </div>
                 </div>
             </div>
@@ -194,8 +199,8 @@
                     <select name="status" class="border border-gray-200 rounded-lg p-2.5 text-sm outline-none
                 focus:ring-2 focus:ring-[#1A87D7]/30 focus:border-[#1A87D7]" id="status">
                         <option value="to-do">To do</option>
-                        <option value="In progress">In progress</option>
-                        <option value="Completed">Completed</option>
+                        <option value="in-progress">In progress</option>
+                        <option value="completed">Completed</option>
                     </select>
                 </div>
 

@@ -18,26 +18,42 @@
   });
 
 
-// 1. Adding New Tasks
-// Create input fields for the task name, category, deadline, and an initial status (e.g., “In Progress”).
-// Include an “Add Task” button that will add the task to the task list.
-// Each task should be stored as an object with properties such as task name, category, deadline, and status.
-// Add the task object to an array that holds all tasks.
+    // 1. Adding New Tasks
+    // Create input fields for the task name, category, deadline, and an initial status (e.g., “In Progress”).
+    // Include an “Add Task” button that will add the task to the task list.
+    // Each task should be stored as an object with properties such as task name, category, deadline, and status.
+    // Add the task object to an array that holds all tasks.
 
 
-const addButton = document.getElementById("addBtn");
-const modal = document.getElementById("modal");
-const backdrop = document.getElementById("backdrop");
-const closeButton = document.getElementById("closeBtn");
+    const addButton = document.getElementById("addTaskBtn");
+    const modal = document.getElementById("modal");
+    const backdrop = document.getElementById("backdrop");
+    const closeButton = document.getElementById("closeBtn");
+    const taskForm = document.getElementById("taskForm");
 
-function toggleModal (e){
-    if( modal.classList.contains("hidden")){
-        modal.classList.remove("hidden");
-    }else{
-        modal.classList.add("hidden");
-    }  
-}
+    function toggleModal (e){
+        if( modal.classList.contains("hidden")){
+            modal.classList.remove("hidden");
+        }else{
+            modal.classList.add("hidden");
+        }  
+    }
 
-addButton.addEventListener("click" , toggleModal);
-closeButton.addEventListener("click" , toggleModal);
-backdrop.addEventListener("click" , toggleModal);
+    addButton.addEventListener("click" , toggleModal);
+    closeButton.addEventListener("click" , toggleModal);
+    backdrop.addEventListener("click" , toggleModal);
+
+    let allTasks = [];
+
+    function handleSubmit (e) {
+        e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+
+    allTasks.push(data);
+    
+        
+    console.log(allTasks)
+    }
+
+    taskForm.addEventListener("submit", handleSubmit)

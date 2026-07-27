@@ -7,6 +7,7 @@ It is a task management app where users add tasks via a modal form (category, ta
 - **Sidebar** — navigation (Dashboard, Tasks, Analytics, Settings), collapsible on mobile via `toggleSidebar()`.
 - **Topbar** — mobile menu toggle, notification icon, profile avatar.
 - **Tasks** — three columns (Todo / In Progress / Completed) representing task status, styled with Tailwind (via CDN).
+- **Filter bar** — category and status dropdowns, plus "Clear filters".
 
 ## File Structure
  
@@ -65,10 +66,25 @@ It is a task management app where users add tasks via a modal form (category, ta
 - This is calculated live on every render — nothing is stored — so it's always accurate to the current date.
 
 ---
+### Filtering
+- A filter bar sits above the board with two dropdowns:
+  - **Category** — dynamically populated from the distinct categories currently in `allTasks` (plus "All categories")
+  - **Status** — fixed options: All statuses / To do / In progress / Completed
+- A **Clear filters** button resets both back to "All".
+- `getFilteredTasks()` combines both filters with AND logic (e.g. category "Work" + status "Completed" shows only completed Work tasks) and feeds the result into `renderTasks()`.
+- Filtering by status will naturally empty out non-matching columns, since the board is already split by status; the category filter narrows what's shown within whichever columns remain visible.
 
-
+---
 ## How It Works
-1. Open `pages/tasks.html` in a browser (Tailwind is loaded via CDN, no build step needed).
+1. Open `pages/tasks.html` in a browser (Tailwind loads via CDN, no build step needed).
 2. Click the **+** icon in the "Todo Tasks" column to open the Add Task modal.
-3. Fill in category, task name, deadline, and status (required fields).
-4. Click **Save** — the task object is added to the in-memory `allTasks` array (check the browser console to see it logged).
+3. Fill in category, task name, deadline, and status, then click **Save**.
+4. The task appears as a card in the matching column, is saved to `localStorage`, and is automatically flagged "Overdue" if its deadline has passed.
+5. Change a task's status via its dropdown to move it between columns — the change persists across reloads.
+
+## Reflection
+Building this project taught me a lot about keeping UI and data in sync. The trickiest part was making sure the task list, the DOM, and `localStorage` always synced with each other. I also ran into a quiet bug where my status dropdown values ("In progress", "Completed") didn't match the lowercase keys I used to sort tasks into columns, so tasks just disappeared with no error to point me to why.
+
+I learned to fix both by leaning on one main `renderTasks()` function that always rebuilds the whole board from scratch off the current task array, instead of trying to update pieces of the DOM individually. For the silent bug, `console.log` became my best friend for tracing exactly where the data stopped matching up, which taught me to be a lot more careful about keeping values consistent across a whole project.
+
+If I had more time, I'd add editing and deleting tasks, better input validation, and eventually move storage to a real backend instead of `localStorage`.

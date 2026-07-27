@@ -31,6 +31,11 @@
     const closeButton = document.getElementById("closeBtn");
     const taskForm = document.getElementById("taskForm");
 
+    // filters
+    const categoryFilter = document.getElementById("categoryFilter");
+    const statusFilter = document.getElementById("statusFilter");
+    const clearFiltersBtn = document.getElementById("clearFilters");
+
 
     const columnMap = {
         "to-do": document.getElementById("todoList"),
@@ -58,13 +63,15 @@
 
 
       function renderTasks() {
+
+        populateCategoryFilter();
        
         Object.values(columnMap).forEach(list => list.innerHTML = "");
-        allTasks.forEach(task => {
+        const tasksToRender = getFilteredTasks();
+
+         tasksToRender.forEach(task => {
             const column = columnMap[task.status];
-            if (column) {
-                return column.appendChild(createTaskCard(task));
-            }
+            if (column) column.appendChild(createTaskCard(task));
         });
     }
 
@@ -147,6 +154,31 @@
     }
 
 
+    function populateCategoryFilter() {
+        const previousValue = categoryFilter.value;
+        const categories = [...new Set(allTasks.map(t => t.category).filter(Boolean))];
+
+        
+        categoryFilter.innerHTML = `<option value="all">All categories</option>` +
+            categories.map(cat => `<option value="${cat}">${cat}</option>`).join("");
+
+            console.log(categoryFilter);
+        // keep the previously selected filter if it still exists, otherwise reset to "all"
+        categoryFilter.value = categories.includes(previousValue) ? previousValue : "all";
+    }
+
+    function getFilteredTasks() {
+        const categoryValue = categoryFilter.value;
+        const statusValue = statusFilter.value;
+
+        return allTasks.filter(task => {
+            const matchesCategory = categoryValue === "all" || task.category === categoryValue;
+            const matchesStatus = statusValue === "all" || task.status === statusValue;
+            return matchesCategory && matchesStatus;
+        });
+    }
+
+
     function handleSubmit (e) {
         e.preventDefault();
         const formData = new FormData(e.target);
@@ -166,5 +198,16 @@
     closeButton.addEventListener("click" , toggleModal);
     backdrop.addEventListener("click" , toggleModal);
     taskForm.addEventListener("submit", handleSubmit)
+
+
+    categoryFilter.addEventListener("change", renderTasks);
+    statusFilter.addEventListener("change", renderTasks);
+
+    // reset both filters back to "all"
+    clearFiltersBtn.addEventListener("click", () => {
+        categoryFilter.value = "all";
+        statusFilter.value = "all";
+        renderTasks();
+    });
 
     renderTasks();

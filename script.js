@@ -1,18 +1,14 @@
 
-
- function toggleSidebar(open) {
+ function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const backdrop = document.getElementById('sidebarBackdrop');
-    if (open) {
-      sidebar.classList.remove('-translate-x-full');
-      backdrop.classList.remove('hidden');
-      document.body.classList.add('overflow-hidden');
-    } else {
-      sidebar.classList.add('-translate-x-full');
-      backdrop.classList.add('hidden');
-      document.body.classList.remove('overflow-hidden');
-    }
+
+      sidebar.classList.toggle('-translate-x-full');
+      backdrop.classList.toggle('hidden');
+      document.body.classList.toggle('overflow-hidden');
   }
+
+
   window.addEventListener('resize', () => {
     if (window.innerWidth >= 768) toggleSidebar(false);
   });
@@ -49,11 +45,7 @@
 
 
     function toggleModal (e){
-        if( modal.classList.contains("hidden")){
-            modal.classList.remove("hidden");
-        }else{
-            modal.classList.add("hidden");
-        }  
+        modal.classList.toggle("hidden");
     }
 
 
@@ -127,7 +119,7 @@
 
         const deadline = document.createElement("p");
         deadline.className = "text-xs text-gray-500";
-        deadline.textContent = `Due: ${task.deadline}`;
+        deadline.textContent = `Due: ${task.deadline} `;
         deadlineRow.appendChild(deadline);
 
         // "Overdue" badge, shown automatically based on today's date

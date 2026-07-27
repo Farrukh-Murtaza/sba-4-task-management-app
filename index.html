@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management App</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="./script.js" defer></script>
+</head>
+
+<body class="bg-[#eef2f5]">
+
+    <div class="grid grid-cols-12 md:min-h-screen">
+
+        <!-- Sidebar -->
+        <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 -translate-x-full transition-transform duration-300 ease-in-out
+              md:static md:translate-x-0 md:col-span-3  xl:col-span-2 md:w-auto
+              col-span-12 bg-white shadow-2xl min-h-screen">
+            <div class="flex flex-col sticky top-0">
+
+                <div class="flex flex-row items-center justify-between mt-6 mb-8 gap-2 px-5">
+                    <a class="flex flex-row items-center gap-2" href="/">
+                        <svg class="size-8" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M16.9395 12.9063V6.45313C16.9392 6.17022 16.8645 5.89237 16.7229 5.64743C16.5813 5.4025 16.3778 5.1991 16.1328 5.05765L10.4863 1.83108C10.2411 1.68949 9.96288 1.61494 9.67969 1.61494C9.3965 1.61494 9.1183 1.68949 8.87305 1.83108L3.22656 5.05765C2.98156 5.1991 2.77805 5.4025 2.63647 5.64743C2.49489 5.89237 2.42021 6.17022 2.41992 6.45313V12.9063C2.42021 13.1892 2.49489 13.467 2.63647 13.712C2.77805 13.9569 2.98156 14.1603 3.22656 14.3017L8.87305 17.5283C9.1183 17.6699 9.3965 17.7444 9.67969 17.7444C9.96288 17.7444 10.2411 17.6699 10.4863 17.5283L16.1328 14.3017C16.3778 14.1603 16.5813 13.9569 16.7229 13.712C16.8645 13.467 16.9392 13.1892 16.9395 12.9063Z"
+                                stroke="black" stroke-width="0.806641" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M6.0498 3.396L9.67969 5.49326L13.3096 3.396" stroke="black" stroke-width="0.806641"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M6.0498 15.9635V11.777L2.41992 9.67975" stroke="black" stroke-width="0.806641"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M16.9395 9.67975L13.3096 11.777V15.9635" stroke="black" stroke-width="0.806641"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M2.6377 5.61426L9.67967 9.68779L16.7216 5.61426" stroke="#1A87D7"
+                                stroke-width="0.806641" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M9.67969 17.8107V9.67975" stroke="#1A87D7" stroke-width="0.806641"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <span class="text-lg font-bold text-gray-900">Pro Manage</span>
+                    </a>
+
+                    <button onclick="toggleSidebar(false)" class="md:hidden text-gray-400 hover:text-gray-700 p-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8"
+                            stroke="currentColor" class="size-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <ul class="px-3 space-y-1">
+                    <li>
+                        <a class="flex items-center gap-3  bg-[#ecf4fd] text-[#1A87D7] rounded-lg px-4 py-2.5 cursor-pointer"
+                            href="/">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7"
+                                stroke="currentColor" class="size-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
+                            </svg>
+                            <span class="text-[15px] font-medium">Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="flex items-center gap-3 hover:bg-[#ecf4fd] hover:text-[#1A87D7]  text-gray-500 rounded-lg px-4 py-2.5 cursor-pointer transition-colors"
+                            href="./pages/tasks.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7"
+                                stroke="currentColor" class="size-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                            </svg>
+                            <span class="text-[15px]">Tasks</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="flex items-center gap-3 hover:bg-[#ecf4fd] hover:text-[#1A87D7]  text-gray-500 rounded-lg px-4 py-2.5 cursor-pointer transition-colors"
+                            href="/">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7"
+                                stroke="currentColor" class="size-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                            </svg>
+                            <span class="text-[15px]">Analytics</span>
+                        </a>
+                    </li>
+
+                    <li
+                        class="flex items-center gap-3 text-gray-500 hover:bg-[#ecf4fd] hover:text-[#1A87D7] rounded-lg px-4 py-2.5 cursor-pointer transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
+                            <path fill-rule="evenodd"
+                                d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 0 0-.986.57c-.166.115-.334.126-.45.083l-1.217-.456a1.875 1.875 0 0 0-2.282.819l-.922 1.597a1.875 1.875 0 0 0 .432 2.385l.84.692c.095.078.17.229.154.43a7.598 7.598 0 0 0 0 1.139c.015.2-.059.352-.153.43l-.841.692a1.875 1.875 0 0 0-.432 2.385l.922 1.597a1.875 1.875 0 0 0 2.282.818l1.217-.456c.116-.043.284-.032.45.083.312.214.641.405.985.57.182.088.277.228.297.348l.178 1.072c.151.904.933 1.567 1.85 1.567h1.844c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.348a7.454 7.454 0 0 0 .985-.57c.167-.115.335-.126.451-.083l1.216.456a1.875 1.875 0 0 0 2.283-.818l.921-1.597a1.875 1.875 0 0 0-.432-2.385l-.84-.692c-.095-.078-.17-.229-.154-.43a7.599 7.599 0 0 0 0-1.139c-.016-.2.059-.352.153-.43l.84-.692c.708-.582.891-1.59.433-2.385l-.922-1.597a1.875 1.875 0 0 0-2.282-.818l-1.217.455c-.115.043-.283.032-.45-.082a7.409 7.409 0 0 0-.985-.57c-.183-.089-.277-.23-.297-.349l-.179-1.072a1.875 1.875 0 0 0-1.85-1.567h-1.843ZM12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <span class="text-[15px]">Settings</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <!-- main -->
+        <main class="col-span-12 md:col-span-9 xl:col-span-10 bg-[#eef2f5] min-h-screen">
+            <!-- TOPBAR -->
+            <div class="flex items-center justify-between bg-white px-4 sm:px-8 py-4 border-b border-gray-100">
+                <div class="flex items-center gap-3 flex-1 min-w-0">
+                    <button onclick="toggleSidebar(true)"
+                        class="md:hidden shrink-0 text-gray-600 hover:text-gray-900 p-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8"
+                            stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+                        </svg>
+
+                </div>
+                <div class="flex items-center gap-3 sm:gap-5 shrink-0 pl-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6"
+                        stroke="currentColor" class="size-5 text-gray-500 cursor-pointer hidden sm:block">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+                    </svg>
+                    <img src="./images/profile-img.png" class="size-9 rounded-full object-cover" alt="avatar">
+                </div>
+            </div>
+
+            <div class="px-8 py-7">
+
+                <div class="flex mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+                        <p class="text-sm text-gray-500 mt-1">Here's what's happening with your projects today.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>
